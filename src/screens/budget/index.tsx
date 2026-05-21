@@ -8,6 +8,8 @@ import { ScrollView } from "react-native";
 
 import { IncludedServices } from "@/components/included-services";
 import { MOCK_SERVICES } from "@/components/included-services/mock";
+import { InvestmentSummary } from "@/components/investment-summary";
+import { MOCK_INVESTMENT } from "@/components/investment-summary/mock";
 
 import { styles } from "./styles";
 
@@ -34,6 +36,8 @@ const Budget: React.FC = () => {
         onEditService={handleEditService}
         onAddService={handleAddService}
       />
+
+      <InvestmentSummary {...MOCK_INVESTMENT} />
     </ScrollView>
   );
 };

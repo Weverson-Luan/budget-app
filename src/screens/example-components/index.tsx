@@ -9,6 +9,8 @@ import { AppButton } from "@/components/forms/app-button";
 import { InputRadius } from "@/components/forms/input-radius";
 import { IncludedServices } from "@/components/included-services";
 import { MOCK_SERVICES } from "@/components/included-services/mock";
+import { InvestmentSummary } from "@/components/investment-summary";
+import { MOCK_INVESTMENT } from "@/components/investment-summary/mock";
 import { StatusBar } from "expo-status-bar";
 
 import { MaterialIcons } from "@expo/vector-icons";
@@ -46,6 +48,18 @@ const ExampleComponents: React.FC = () => {
             onEditService={(id) => console.log("Editar serviço:", id)}
             onAddService={() => console.log("Adicionar serviço")}
           />
+        </View>
+
+        <View
+          style={{
+            width: "100%",
+            marginBottom: 24,
+            padding: 16,
+            borderWidth: 1,
+            borderStyle: "dashed",
+          }}
+        >
+          <InvestmentSummary {...MOCK_INVESTMENT} />
         </View>
 
         <View style={{ marginBottom: 24, width: "100%" }}>
