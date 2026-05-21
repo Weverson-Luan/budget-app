@@ -2,10 +2,11 @@
  * IMPORTS
  */
 
-import React from "react";
+import React, { useState } from "react";
 
 import { ScrollView } from "react-native";
 
+import { GeneralInformation } from "@/components/general-information";
 import { IncludedServices } from "@/components/included-services";
 import { MOCK_SERVICES } from "@/components/included-services/mock";
 import { InvestmentSummary } from "@/components/investment-summary";
@@ -17,6 +18,9 @@ import { styles } from "./styles";
  * Component Budget para a interação do usuário com ui.
  */
 const Budget: React.FC = () => {
+  const [title, setTitle] = useState("");
+  const [client, setClient] = useState("");
+
   function handleEditService(id: string) {
     console.log("Editar serviço:", id);
   }
@@ -31,6 +35,13 @@ const Budget: React.FC = () => {
       contentContainerStyle={styles.content}
       showsVerticalScrollIndicator={false}
     >
+      <GeneralInformation
+        title={title}
+        client={client}
+        onChangeTitle={setTitle}
+        onChangeClient={setClient}
+      />
+
       <IncludedServices
         services={MOCK_SERVICES}
         onEditService={handleEditService}

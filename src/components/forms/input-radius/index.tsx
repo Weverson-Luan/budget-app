@@ -24,23 +24,30 @@ const InputRadius: React.FC<IInputRadiusProps> = ({
   value,
   placeholder = "Placeholder",
   error = false,
+  variant = "currency",
   onChangeText,
+  ...rest
 }: IInputRadiusProps) => {
   const [focused, setFocused] = useState(false);
+  const isTextVariant = variant === "text";
 
   return (
     <View
       style={[styles.container, { borderColor: borderColor(error, focused) }]}
     >
-      <MaterialIcons
-        name="calendar-month"
-        size={18}
-        color={textColor(error, focused)}
-      />
+      {!isTextVariant && (
+        <>
+          <MaterialIcons
+            name="calendar-month"
+            size={18}
+            color={textColor(error, focused)}
+          />
 
-      <Text style={[styles.prefix, { color: textColor(error, focused) }]}>
-        R$
-      </Text>
+          <Text style={[styles.prefix, { color: textColor(error, focused) }]}>
+            R$
+          </Text>
+        </>
+      )}
 
       <TextInput
         value={value}
@@ -50,6 +57,7 @@ const InputRadius: React.FC<IInputRadiusProps> = ({
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         onChangeText={onChangeText}
+        {...rest}
       />
     </View>
   );
