@@ -20,10 +20,19 @@ import { theme } from "@/styles/theme/theme";
 /**
  * Component BottomSheetMain
  */
-const BottomSheetMain: React.FC<any> = ({
+interface IBottomSheetMainProps {
+  isOpen: { value: boolean };
+  toggleSheet: () => void;
+  duration?: number;
+  sheetHeight?: number;
+  children: React.ReactNode;
+}
+
+const BottomSheetMain: React.FC<IBottomSheetMainProps> = ({
   isOpen,
   toggleSheet,
   duration = 500,
+  sheetHeight = 562,
   children,
 }) => {
   const insets = useSafeAreaInsets();
@@ -66,10 +75,11 @@ const BottomSheetMain: React.FC<any> = ({
         }}
         style={[
           sheetStyles.sheet,
+          { height: sheetHeight },
           sheetStyle,
           {
             backgroundColor: theme.colors.white,
-            paddingBottom: insets.bottom, // 👈 SAFE AREA
+            paddingBottom: insets.bottom,
           },
         ]}
       >
@@ -86,7 +96,6 @@ export { BottomSheetMain };
 
 const sheetStyles = StyleSheet.create({
   sheet: {
-    height: 562,
     width: "100%",
     position: "absolute",
     bottom: 0,

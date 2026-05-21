@@ -4,7 +4,7 @@
 
 import { TextInputProps } from "react-native";
 
-type InputRadiusVariant = "currency" | "text";
+type InputRadiusVariant = "currency" | "text" | "textarea";
 
 interface IInputRadiusProps extends TextInputProps {
   error?: boolean;

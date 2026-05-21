@@ -16,6 +16,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
   },
 
+  containerTextarea: {
+    height: 88,
+    borderRadius: 16,
+    alignItems: "flex-start",
+    paddingVertical: 12,
+  },
+
   prefix: {
     fontSize: 14,
     fontWeight: "600",
@@ -24,6 +31,11 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 14,
+  },
+
+  inputTextarea: {
+    height: "100%",
+    textAlignVertical: "top",
   },
 });
 
