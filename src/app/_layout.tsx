@@ -2,21 +2,25 @@
  * IMPORTS
  */
 
+import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import { ExampleComponents } from "@/screens/example-components";
-import { Home } from "@/screens/home";
 import { theme } from "@/styles/theme/theme";
 
-export default function App() {
+export default function RootLayout() {
   return (
-    <GestureHandlerRootView>
-      <SafeAreaProvider style={styles.container}>
-        <Home />
+    <GestureHandlerRootView style={styles.root}>
+      <SafeAreaProvider>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen
+            name="budget"
+            options={{ title: "Orçamento", headerShown: true }}
+          />
+        </Stack>
         <StatusBar style="dark" backgroundColor={theme.colors.gray_700} />
       </SafeAreaProvider>
     </GestureHandlerRootView>
@@ -24,10 +28,7 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  root: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
   },
 });

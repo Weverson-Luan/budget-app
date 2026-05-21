@@ -1,7 +1,7 @@
 {
   "name": "budget-app",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
@@ -12,6 +12,9 @@
     "@expo/vector-icons": "^15.0.3",
     "@gorhom/bottom-sheet": "5.2.8",
     "expo": "54.0.31",
+    "expo-constants": "~18.0.13",
+    "expo-linking": "~8.0.12",
+    "expo-router": "~6.0.23",
     "expo-status-bar": "~3.0.9",
     "mage-icons-react": "0.7.0-beta",
     "react": "19.1.0",
@@ -19,6 +22,7 @@
     "react-native-gesture-handler": "2.28.0",
     "react-native-reanimated": "~4.1.1",
     "react-native-safe-area-context": "~5.6.0",
+    "react-native-screens": "~4.16.0",
     "react-native-worklets": "0.5.1",
     "react-native-worklets-core": "1.6.2"
   },

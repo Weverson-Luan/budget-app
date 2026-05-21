@@ -12,6 +12,7 @@ import {
 } from "react-native";
 
 import { Feather, MaterialIcons } from "@expo/vector-icons";
+import { router } from "expo-router";
 
 import BottomSheet from "@gorhom/bottom-sheet";
 
@@ -110,7 +111,7 @@ const Home: React.FC = () => {
           <AppButton
             label="Novo"
             icon={<Feather name="plus" size={16} color="#FFF" />}
-            onPress={() => handleOpenFilter()}
+            onPress={() => router.push("/budget")}
           />
         </View>
 
