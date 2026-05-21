@@ -2,10 +2,15 @@
  * IMPORTS
  */
 
+import { IStatusType } from "@/components/status/interface";
+
 interface IHeaderProps {
-  children: React.ReactNode;
+  title: string;
+  onBack?: () => void;
+  status?: IStatusType;
 }
 
-/** * EXPORTS
+/**
+ * EXPORTS
  */
 export type { IHeaderProps };
