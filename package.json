@@ -4,18 +4,27 @@
   "main": "index.ts",
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web"
   },
   "dependencies": {
-    "expo": "~54.0.31",
+    "@expo/vector-icons": "^15.0.3",
+    "@gorhom/bottom-sheet": "5.2.8",
+    "expo": "54.0.31",
     "expo-status-bar": "~3.0.9",
+    "mage-icons-react": "0.7.0-beta",
     "react": "19.1.0",
-    "react-native": "0.81.5"
+    "react-native": "0.81.5",
+    "react-native-gesture-handler": "2.28.0",
+    "react-native-reanimated": "~4.1.1",
+    "react-native-safe-area-context": "~5.6.0",
+    "react-native-worklets": "0.5.1",
+    "react-native-worklets-core": "1.6.2"
   },
   "devDependencies": {
     "@types/react": "~19.1.0",
+    "babel-preset-expo": "54.0.9",
     "typescript": "~5.9.2"
   },
   "private": true
