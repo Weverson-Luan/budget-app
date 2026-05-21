@@ -4,15 +4,17 @@
 
 import React, { useState } from "react";
 
-import { ScrollView } from "react-native";
+import { router } from "expo-router";
+import { ScrollView, View } from "react-native";
 
+import { BudgetFooter } from "@/components/budget-footer";
 import { GeneralInformation } from "@/components/general-information";
 import { IncludedServices } from "@/components/included-services";
-import { IStatusType } from "@/components/status/interface";
-import { StatusSelector } from "@/components/status-selector";
 import { MOCK_SERVICES } from "@/components/included-services/mock";
 import { InvestmentSummary } from "@/components/investment-summary";
 import { MOCK_INVESTMENT } from "@/components/investment-summary/mock";
+import { IStatusType } from "@/components/status/interface";
+import { StatusSelector } from "@/components/status-selector";
 
 import { styles } from "./styles";
 
@@ -32,29 +34,40 @@ const Budget: React.FC = () => {
     console.log("Adicionar serviço");
   }
 
+  function handleSave() {
+    console.log("Salvar orçamento", { title, client, status });
+  }
+
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.content}
-      showsVerticalScrollIndicator={false}
-    >
-      <GeneralInformation
-        title={title}
-        client={client}
-        onChangeTitle={setTitle}
-        onChangeClient={setClient}
+    <View style={styles.wrapper}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
+        <GeneralInformation
+          title={title}
+          client={client}
+          onChangeTitle={setTitle}
+          onChangeClient={setClient}
+        />
+
+        <StatusSelector value={status} onChange={setStatus} />
+
+        <IncludedServices
+          services={MOCK_SERVICES}
+          onEditService={handleEditService}
+          onAddService={handleAddService}
+        />
+
+        <InvestmentSummary {...MOCK_INVESTMENT} />
+      </ScrollView>
+
+      <BudgetFooter
+        onCancel={() => router.back()}
+        onSave={handleSave}
       />
-
-      <StatusSelector value={status} onChange={setStatus} />
-
-      <IncludedServices
-        services={MOCK_SERVICES}
-        onEditService={handleEditService}
-        onAddService={handleAddService}
-      />
-
-      <InvestmentSummary {...MOCK_INVESTMENT} />
-    </ScrollView>
+    </View>
   );
 };
 
