@@ -23,6 +23,7 @@ const Check: React.FC<ICheckProps> = ({
   type = "checkbox",
   selected = false,
   onPress,
+  hideLabel = false,
 }: ICheckProps) => {
   const config = returnCheckConfig(type, selected);
 
@@ -30,7 +31,9 @@ const Check: React.FC<ICheckProps> = ({
     <Pressable style={styles.container} onPress={onPress}>
       <MaterialIcons name={config.icon as any} size={22} color={config.color} />
 
-      <Text style={styles.label}>{label}</Text>
+      {!hideLabel && label ? (
+        <Text style={styles.label}>{label}</Text>
+      ) : null}
     </Pressable>
   );
 };

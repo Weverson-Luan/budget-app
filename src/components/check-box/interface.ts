@@ -8,6 +8,7 @@ interface ICheckProps {
   type?: ICheckType;
   selected?: boolean;
   onPress?: () => void;
+  hideLabel?: boolean;
 }
 
 /**

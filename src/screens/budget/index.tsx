@@ -8,6 +8,8 @@ import { ScrollView } from "react-native";
 
 import { GeneralInformation } from "@/components/general-information";
 import { IncludedServices } from "@/components/included-services";
+import { IStatusType } from "@/components/status/interface";
+import { StatusSelector } from "@/components/status-selector";
 import { MOCK_SERVICES } from "@/components/included-services/mock";
 import { InvestmentSummary } from "@/components/investment-summary";
 import { MOCK_INVESTMENT } from "@/components/investment-summary/mock";
@@ -20,6 +22,7 @@ import { styles } from "./styles";
 const Budget: React.FC = () => {
   const [title, setTitle] = useState("");
   const [client, setClient] = useState("");
+  const [status, setStatus] = useState<IStatusType>("draft");
 
   function handleEditService(id: string) {
     console.log("Editar serviço:", id);
@@ -41,6 +44,8 @@ const Budget: React.FC = () => {
         onChangeTitle={setTitle}
         onChangeClient={setClient}
       />
+
+      <StatusSelector value={status} onChange={setStatus} />
 
       <IncludedServices
         services={MOCK_SERVICES}
