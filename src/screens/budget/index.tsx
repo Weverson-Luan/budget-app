@@ -17,11 +17,14 @@ import { IStatusType } from "@/components/status/interface";
 import { StatusSelector } from "@/components/status-selector";
 
 import { styles } from "./styles";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 /**
  * Component Budget para a interação do usuário com ui.
  */
 const Budget: React.FC = () => {
+  const insets = useSafeAreaInsets();
+
   const [title, setTitle] = useState("");
   const [client, setClient] = useState("");
   const [status, setStatus] = useState<IStatusType>("draft");
@@ -39,7 +42,11 @@ const Budget: React.FC = () => {
   }
 
   return (
-    <View style={styles.wrapper}>
+    <View style={[styles.wrapper, {
+      flex: 1,
+      paddingTop: insets.top,
+      paddingBottom: insets.bottom,
+    },]}>
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.content}

@@ -15,14 +15,14 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={styles.root}>
       <SafeAreaProvider>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(tabs)" />
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen
-            name="budget"
+            name="budget/index"
             options={{ title: "Orçamento", headerShown: true }}
           />
         </Stack>
-        <StatusBar style="dark" backgroundColor={theme.colors.gray_700} />
+        <StatusBar style="auto" backgroundColor={theme.colors.gray_700} />
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

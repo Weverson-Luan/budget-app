@@ -104,7 +104,7 @@ const Home: React.FC = () => {
         {/* HEADER */}
         <View style={styles.header}>
           <View>
-            <Text style={styles.title}>Orçamentos</Text>
+            <Text style={styles.title}>Todos orçamentos</Text>
             <Text style={styles.subtitle}>Você tem 1 item em rascunho</Text>
           </View>
 
