@@ -1,21 +1,40 @@
 /**
  * IMPORTS
  */
+
 import React from "react";
 
-import { Text, View } from "react-native";
+import { ScrollView } from "react-native";
 
-// styles
+import { IncludedServices } from "@/components/included-services";
+import { MOCK_SERVICES } from "@/components/included-services/mock";
+
 import { styles } from "./styles";
 
 /**
- * Component ExampleComponent para a interação do usuário com ui.
+ * Component Budget para a interação do usuário com ui.
  */
 const Budget: React.FC = () => {
+  function handleEditService(id: string) {
+    console.log("Editar serviço:", id);
+  }
+
+  function handleAddService() {
+    console.log("Adicionar serviço");
+  }
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.welcomeText}>Welcome to the Index Page</Text>
-    </View>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.content}
+      showsVerticalScrollIndicator={false}
+    >
+      <IncludedServices
+        services={MOCK_SERVICES}
+        onEditService={handleEditService}
+        onAddService={handleAddService}
+      />
+    </ScrollView>
   );
 };
 

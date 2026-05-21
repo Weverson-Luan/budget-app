@@ -4,18 +4,15 @@
 
 import { StyleSheet } from "react-native";
 
+import { theme } from "@/styles/theme/theme";
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF",
+    backgroundColor: theme.colors.gray_100,
   },
-
-  welcomeText: {
-    fontSize: 20,
-    textAlign: "center",
-    margin: 10,
+  content: {
+    padding: 16,
   },
 });
 

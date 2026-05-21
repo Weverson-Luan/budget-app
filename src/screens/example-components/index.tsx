@@ -3,10 +3,12 @@
  */
 import React, { useState } from "react";
 
-import { Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 
 import { AppButton } from "@/components/forms/app-button";
 import { InputRadius } from "@/components/forms/input-radius";
+import { IncludedServices } from "@/components/included-services";
+import { MOCK_SERVICES } from "@/components/included-services/mock";
 import { StatusBar } from "expo-status-bar";
 
 import { MaterialIcons } from "@expo/vector-icons";
@@ -24,11 +26,27 @@ const ExampleComponents: React.FC = () => {
   const [radio, setRadio] = useState(true);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={{ padding: 16, paddingTop: 40 }}>
       <View style={styles.container}>
         <Text style={{ marginBottom: 24 }}>
-          Open up App.tsx to start working on your app!
+          Vejam os componentes que estão disponíveis para uso no app.
         </Text>
+
+        <View
+          style={{
+            width: "100%",
+            marginBottom: 24,
+            padding: 16,
+            borderWidth: 1,
+            borderStyle: "dashed",
+          }}
+        >
+          <IncludedServices
+            services={MOCK_SERVICES}
+            onEditService={(id) => console.log("Editar serviço:", id)}
+            onAddService={() => console.log("Adicionar serviço")}
+          />
+        </View>
 
         <View style={{ marginBottom: 24, width: "100%" }}>
           <InputRadius />
@@ -111,7 +129,7 @@ const ExampleComponents: React.FC = () => {
           <Check label="Label" type="radio" selected />
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
