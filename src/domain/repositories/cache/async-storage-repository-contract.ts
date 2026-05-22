@@ -3,9 +3,9 @@
  */
 
 interface AsyncStorageRepositoryContract {
-  set<T>(key: string, value: T): Promise<void>;
+  set(key: string, value: string): Promise<void>;
 
-  get<T>(key: string): Promise<T | null>;
+  get(key: string): Promise<string | null>;
 
   remove(key: string): Promise<void>;
 

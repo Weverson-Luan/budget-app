@@ -40,18 +40,12 @@ import { AsyncStorage } from "@/data/libs/@react-native-assync-storage";
  * sem impactar as regras de negócio da aplicação.
  */
 class AsyncStorageRepository implements AsyncStorageRepositoryContract {
-  async set<T>(key: string, value: T): Promise<void> {
-    await AsyncStorage.setItem(key, JSON.stringify(value));
+  async set(key: string, value: string): Promise<void> {
+    await AsyncStorage.setItem(key, value);
   }
 
-  async get<T>(key: string): Promise<T | null> {
-    const data = await AsyncStorage.getItem(key);
-
-    if (!data) {
-      return null;
-    }
-
-    return JSON.parse(data);
+  async get(key: string): Promise<string | null> {
+    return AsyncStorage.getItem(key);
   }
 
   async remove(key: string): Promise<void> {

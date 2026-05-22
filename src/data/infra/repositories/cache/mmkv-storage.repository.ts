@@ -40,18 +40,12 @@ import { mmkvStorage } from "@/data/libs/mmkv";
  * sem impactar as regras de negócio da aplicação.
  */
 class MMKVStorageRepository implements MmkvRepositoryContract {
-  async set<T>(key: string, value: T): Promise<void> {
-    mmkvStorage.set(key, JSON.stringify(value));
+  async set(key: string, value: string): Promise<void> {
+    mmkvStorage.set(key, value);
   }
 
-  async get<T>(key: string): Promise<T | null> {
-    const data = mmkvStorage.getString(key);
-
-    if (!data) {
-      return null;
-    }
-
-    return JSON.parse(data);
+  async get(key: string): Promise<string | null> {
+    return mmkvStorage.getString(key) ?? null;
   }
 
   async remove(key: string): Promise<void> {
