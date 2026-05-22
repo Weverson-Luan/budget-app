@@ -39,7 +39,7 @@ const BudgetDetails: React.FC = () => {
       <BudgetDetailsFooter
         onDelete={() => console.log("Excluir", id)}
         onCopy={() => console.log("Copiar", id)}
-        onEdit={() => router.push("/budget")}
+        onEdit={() => router.push("/new-budget")}
         onShare={() => console.log("Compartilhar", id)}
       />
     </View>

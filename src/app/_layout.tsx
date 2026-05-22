@@ -23,17 +23,6 @@ export default function RootLayout() {
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen
-            name="budget/index"
-            options={{
-              title: "Orçamento", headerShown: true,
-              header: () => <Header
-                title="Orçamento #12345"
-                status="draft"
-                onBack={() => router.back()}
-              />
-            }}
-          />
-          <Stack.Screen
             name="budget/[id]"
             options={({ route }) => {
               const { id = "1" } = route?.params as { id?: string };

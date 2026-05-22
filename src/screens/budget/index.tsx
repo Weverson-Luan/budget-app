@@ -7,8 +7,6 @@ import React, { useMemo, useState } from "react";
 import { router } from "expo-router";
 import { ScrollView, View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-
 import { BudgetFooter } from "@/components/budget-footer";
 import { GeneralInformation } from "@/components/general-information";
 import { IncludedServices } from "@/components/included-services";
@@ -31,8 +29,6 @@ import { styles } from "./styles";
  * Component Budget para a interação do usuário com ui.
  */
 const Budget: React.FC = () => {
-  const insets = useSafeAreaInsets();
-
   const [title, setTitle] = useState("");
   const [client, setClient] = useState("");
   const [status, setStatus] = useState<IStatusType>("draft");
@@ -149,16 +145,7 @@ const Budget: React.FC = () => {
   }
 
   return (
-    <View
-      style={[
-        styles.wrapper,
-        {
-          flex: 1,
-          paddingTop: insets.top,
-          paddingBottom: insets.bottom,
-        },
-      ]}
-    >
+    <View style={[styles.wrapper, { flex: 1 }]}>
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.content}

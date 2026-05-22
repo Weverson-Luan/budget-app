@@ -67,7 +67,7 @@ const Home: React.FC = () => {
           <AppButton
             label="Novo"
             icon={<Feather name="plus" size={16} color="#FFF" />}
-            onPress={() => router.push("/budget")}
+            onPress={() => router.push("/new-budget")}
           />
         </View>
 

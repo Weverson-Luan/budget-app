@@ -3,9 +3,11 @@
  */
 
 import { Feather } from "@expo/vector-icons";
-import { Tabs } from "expo-router";
+import { router, Tabs } from "expo-router";
 
+import { Header } from "@/components/header";
 import { theme } from "@/styles/theme/theme";
+
 
 export default function TabsLayout() {
   return (
@@ -30,11 +32,18 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
-        name="playground"
+        name="new-budget"
         options={{
-          title: "Componentes",
+          title: "Novo orçamento",
+          headerShown: true,
+          header: () => (
+            <Header
+              title="Orçamento"
+              onBack={() => router.navigate("/")}
+            />
+          ),
           tabBarIcon: ({ color, size }) => (
-            <Feather name="layers" size={size} color={color} />
+            <Feather name="plus" size={size} color={color} />
           ),
         }}
       />
