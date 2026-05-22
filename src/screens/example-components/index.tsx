@@ -5,6 +5,8 @@ import React, { useState } from "react";
 
 import { ScrollView, Text, View } from "react-native";
 
+import { BudgetOverview } from "@/components/budget-overview";
+import { MOCK_BUDGET_OVERVIEW } from "@/components/budget-overview/mock";
 import { AppButton } from "@/components/forms/app-button";
 import { InputRadius } from "@/components/forms/input-radius";
 import { GeneralInformation } from "@/components/general-information";
@@ -39,6 +41,18 @@ const ExampleComponents: React.FC = () => {
         <Text style={{ marginBottom: 24 }}>
           Vejam os componentes que estão disponíveis para uso no app.
         </Text>
+
+        <View
+          style={{
+            width: "100%",
+            marginBottom: 24,
+            padding: 16,
+            borderWidth: 1,
+            borderStyle: "dashed",
+          }}
+        >
+          <BudgetOverview {...MOCK_BUDGET_OVERVIEW} />
+        </View>
 
         <View
           style={{
