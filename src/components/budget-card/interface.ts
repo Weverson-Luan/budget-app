@@ -2,10 +2,21 @@
  * IMPORTS
  */
 
-import { ViewProps } from "react-native";
+import { IStatusType } from "@/components/status/interface";
 
-interface IExampleProps extends ViewProps {}
+interface IBudgetCardItem {
+  id: string;
+  title: string;
+  client: string;
+  value: string;
+  status: IStatusType;
+}
 
-/** * EXPORTS
+interface IBudgetCardProps {
+  item: IBudgetCardItem;
+}
+
+/**
+ * EXPORTS
  */
-export type { IExampleProps };
+export type { IBudgetCardItem, IBudgetCardProps };

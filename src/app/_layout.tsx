@@ -9,8 +9,11 @@ import { StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import { theme } from "@/styles/theme/theme";
+// components
 import { Header } from "@/components/header";
+
+// styles
+import { theme } from "@/styles/theme/theme";
 
 export default function RootLayout() {
   return (
@@ -27,6 +30,24 @@ export default function RootLayout() {
                 status="draft"
                 onBack={() => router.back()}
               />
+            }}
+          />
+          <Stack.Screen
+            name="budget/[id]"
+            options={({ route }) => {
+              const { id } = route?.params as { id?: string };
+
+              return {
+                title: "Detalhes do Orçamento",
+                headerShown: true,
+                header: () => (
+                  <Header
+                    title={`Detalhe Orçamento #${id ?? "0"}`}
+                    status="draft"
+                    onBack={() => router.back()}
+                  />
+                ),
+              };
             }}
           />
         </Stack>

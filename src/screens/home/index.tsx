@@ -19,6 +19,7 @@ import BottomSheet from "@gorhom/bottom-sheet";
 // components
 import { AppButton } from "@/components/forms/app-button";
 import { BudgetCard } from "@/components/budget-card";
+import { IBudgetCardItem } from "@/components/budget-card/interface";
 import { FilterBottomSheet } from "@/components/filter-bottom-sheet";
 
 // styles
@@ -28,7 +29,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BottomSheetMain } from "@/components/teste-sheet";
 import { useSharedValue } from "react-native-reanimated";
 
-const DATA = [
+const DATA: IBudgetCardItem[] = [
   {
     id: "1",
     title: "Desenvolvimento de aplicativo de loja online",
@@ -137,7 +138,7 @@ const Home: React.FC = () => {
           keyExtractor={(item) => item.id}
           contentContainerStyle={{ gap: 12 }}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => <BudgetCard item={item as any} />}
+          renderItem={({ item }) => <BudgetCard item={item} />}
         />
       </View>
 
