@@ -19,7 +19,7 @@ import BottomSheet from "@gorhom/bottom-sheet";
 // components
 import { AppButton } from "@/components/forms/app-button";
 import { BudgetCard } from "@/components/budget-card";
-import { IBudgetCardItem } from "@/components/budget-card/interface";
+import { BUDGET_LIST } from "@/data/budgets";
 import { FilterBottomSheet } from "@/components/filter-bottom-sheet";
 
 // styles
@@ -28,51 +28,6 @@ import { theme } from "@/styles/theme/theme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BottomSheetMain } from "@/components/teste-sheet";
 import { useSharedValue } from "react-native-reanimated";
-
-const DATA: IBudgetCardItem[] = [
-  {
-    id: "1",
-    title: "Desenvolvimento de aplicativo de loja online",
-    client: "Soluções Tecnológicas Beta",
-    value: "R$ 22.300,00",
-    status: "approved",
-  },
-  {
-    id: "2",
-    title: "Consultoria em marketing digital",
-    client: "Marketing Wizards",
-    value: "R$ 4.000,00",
-    status: "draft",
-  },
-  {
-    id: "3",
-    title: "Serviços de SEO",
-    client: "SEO Masters",
-    value: "R$ 3.500,00",
-    status: "sent",
-  },
-  {
-    id: "4",
-    title: "Criação de conteúdo",
-    client: "Content Creators",
-    value: "R$ 2.500,00",
-    status: "draft",
-  },
-  {
-    id: "5",
-    title: "Gestão de redes sociais",
-    client: "Social Experts",
-    value: "R$ 1.800,00",
-    status: "declined",
-  },
-  {
-    id: "6",
-    title: "Design de interface",
-    client: "UI/UX Designers",
-    value: "R$ 5.200,00",
-    status: "approved",
-  },
-];
 
 /**
  * Screen Home para a interação do usuário com ui.
@@ -134,7 +89,7 @@ const Home: React.FC = () => {
 
         {/* LIST */}
         <FlatList
-          data={DATA}
+          data={BUDGET_LIST}
           keyExtractor={(item) => item.id}
           contentContainerStyle={{ gap: 12 }}
           showsVerticalScrollIndicator={false}

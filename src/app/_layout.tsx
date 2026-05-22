@@ -11,6 +11,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 // components
 import { Header } from "@/components/header";
+import { getBudgetDetailById } from "@/data/budgets";
 
 // styles
 import { theme } from "@/styles/theme/theme";
@@ -35,15 +36,16 @@ export default function RootLayout() {
           <Stack.Screen
             name="budget/[id]"
             options={({ route }) => {
-              const { id } = route?.params as { id?: string };
+              const { id = "1" } = route?.params as { id?: string };
+              const detail = getBudgetDetailById(id);
 
               return {
-                title: "Detalhes do Orçamento",
+                title: "Orçamento",
                 headerShown: true,
                 header: () => (
                   <Header
-                    title={`Detalhe Orçamento #${id ?? "0"}`}
-                    status="draft"
+                    title={`Orçamento #${id}`}
+                    status={detail.status}
                     onBack={() => router.back()}
                   />
                 ),

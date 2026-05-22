@@ -4,27 +4,44 @@
 
 import React from "react";
 
-import { View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { router, useLocalSearchParams } from "expo-router";
+import { ScrollView, View } from "react-native";
+
+import { BudgetDetailsFooter } from "@/components/budget-details-footer";
+import { BudgetOverview } from "@/components/budget-overview";
+import { IncludedServicesOverview } from "@/components/included-services-overview";
+import { InvestmentSummaryOverview } from "@/components/investment-summary-overview";
+import { getBudgetDetailById } from "@/data/budgets";
 
 import { styles } from "./styles";
 
 /**
- * Screen BudgetDetails — scaffold em branco para detalhes do orçamento.
+ * Screen BudgetDetails — visualização do orçamento.
  */
 const BudgetDetails: React.FC = () => {
-  const insets = useSafeAreaInsets();
+  const { id = "1" } = useLocalSearchParams<{ id: string }>();
+  const detail = getBudgetDetailById(id);
 
   return (
-    <View
-      style={[
-        styles.wrapper,
-        {
-          paddingBottom: insets.bottom,
-        },
-      ]}
-    >
-      <View style={styles.container} />
+    <View style={styles.wrapper}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
+        <BudgetOverview {...detail.overview} />
+
+        <IncludedServicesOverview services={detail.services} />
+
+        <InvestmentSummaryOverview {...detail.investment} />
+      </ScrollView>
+
+      <BudgetDetailsFooter
+        onDelete={() => console.log("Excluir", id)}
+        onCopy={() => console.log("Copiar", id)}
+        onEdit={() => router.push("/budget")}
+        onShare={() => console.log("Compartilhar", id)}
+      />
     </View>
   );
 };
