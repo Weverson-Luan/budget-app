@@ -1,7 +1,7 @@
 /**
  * IMPORTS
  */
-import React, { useMemo, useRef } from "react";
+import React, { useMemo } from "react";
 
 import {
   View,
@@ -13,8 +13,6 @@ import {
 
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
-
-import BottomSheet from "@gorhom/bottom-sheet";
 
 // components
 import { AppButton } from "@/components/forms/app-button";
@@ -29,14 +27,23 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BottomSheetMain } from "@/components/teste-sheet";
 import { useSharedValue } from "react-native-reanimated";
 import { useBudgetList } from "@/presentation/hooks/budget/use-budget-list";
+import { useBudgetFilters } from "@/presentation/hooks/budget/use-budget-filters";
 
 /**
  * Screen Home para a interação do usuário com ui.
  */
 const Home: React.FC = () => {
   const insets = useSafeAreaInsets();
-  const sheetRef = useRef<BottomSheet>(null);
   const { budgets } = useBudgetList();
+  const {
+    draftFilters,
+    filteredBudgets,
+    openFilters,
+    toggleDraftStatus,
+    setDraftSortBy,
+    applyFilters,
+    resetFilters,
+  } = useBudgetFilters(budgets);
 
   const draftCount = useMemo(
     () => budgets.filter((item) => item.status === "draft").length,
@@ -50,15 +57,23 @@ const Home: React.FC = () => {
         ? "Você tem 1 item em rascunho"
         : `Você tem ${draftCount} itens em rascunho`;
 
-  function handleOpenFilter() {
-    sheetRef.current?.snapToIndex(0);
-  }
+  const emptyListText =
+    budgets.length === 0
+      ? "Sem orçamentos"
+      : "Nenhum orçamento encontrado";
 
   const isOpen = useSharedValue(false);
 
-  const toggleSheet = () => {
-    isOpen.value = !isOpen.value;
-  };
+  function toggleSheet() {
+    const willOpen = !isOpen.value;
+
+    if (willOpen) {
+      openFilters();
+    }
+
+    isOpen.value = willOpen;
+  }
+
   return (
     <>
       <View
@@ -103,11 +118,11 @@ const Home: React.FC = () => {
 
         {/* LIST */}
         <FlatList
-          data={budgets}
+          data={filteredBudgets}
           keyExtractor={(item) => item.id}
           contentContainerStyle={[
             { gap: 12 },
-            budgets.length === 0 && { flexGrow: 1 },
+            filteredBudgets.length === 0 && { flexGrow: 1 },
           ]}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => <BudgetCard item={item} />}
@@ -120,7 +135,7 @@ const Home: React.FC = () => {
                   color={theme.colors.gray_400}
                 />
               }
-              text="Sem orçamentos"
+              text={emptyListText}
             />
           }
         />
@@ -128,7 +143,14 @@ const Home: React.FC = () => {
 
       {/* BOTTOM SHEET */}
       <BottomSheetMain isOpen={isOpen} toggleSheet={toggleSheet}>
-        <FilterBottomSheet handleOnClosed={toggleSheet} />
+        <FilterBottomSheet
+          filters={draftFilters}
+          onToggleStatus={toggleDraftStatus}
+          onSortChange={setDraftSortBy}
+          onApply={applyFilters}
+          onReset={resetFilters}
+          handleOnClosed={toggleSheet}
+        />
       </BottomSheetMain>
     </>
   );
