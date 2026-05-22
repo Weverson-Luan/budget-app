@@ -9,6 +9,8 @@ import { BudgetOverview } from "@/components/budget-overview";
 import { MOCK_BUDGET_OVERVIEW } from "@/components/budget-overview/mock";
 import { IncludedServicesOverview } from "@/components/included-services-overview";
 import { MOCK_SERVICES_OVERVIEW } from "@/components/included-services-overview/mock";
+import { InvestmentSummaryOverview } from "@/components/investment-summary-overview";
+import { MOCK_INVESTMENT_OVERVIEW } from "@/components/investment-summary-overview/mock";
 import { AppButton } from "@/components/forms/app-button";
 import { InputRadius } from "@/components/forms/input-radius";
 import { GeneralInformation } from "@/components/general-information";
@@ -66,6 +68,18 @@ const ExampleComponents: React.FC = () => {
           }}
         >
           <IncludedServicesOverview services={MOCK_SERVICES_OVERVIEW} />
+        </View>
+
+        <View
+          style={{
+            width: "100%",
+            marginBottom: 24,
+            padding: 16,
+            borderWidth: 1,
+            borderStyle: "dashed",
+          }}
+        >
+          <InvestmentSummaryOverview {...MOCK_INVESTMENT_OVERVIEW} />
         </View>
 
         <View
