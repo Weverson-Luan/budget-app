@@ -2,7 +2,7 @@
  * IMPORTS
  */
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 
 import { router } from "expo-router";
 import { ScrollView, View } from "react-native";
@@ -10,18 +10,15 @@ import { useSharedValue } from "react-native-reanimated";
 import { BudgetFooter } from "@/components/budget-footer";
 import { GeneralInformation } from "@/components/general-information";
 import { IncludedServices } from "@/components/included-services";
-import { MOCK_SERVICES } from "@/components/included-services/mock";
-import { IServiceItem } from "@/components/included-services/interface";
 import { InvestmentSummary } from "@/components/investment-summary";
-import { MOCK_INVESTMENT } from "@/components/investment-summary/mock";
 import { ServiceBottomSheet } from "@/components/service-bottom-sheet";
 import {
   ServiceFormValues,
   ServiceSheetMode,
 } from "@/components/service-bottom-sheet/interface";
-import { IStatusType } from "@/components/status/interface";
 import { StatusSelector } from "@/components/status-selector";
 import { BottomSheetMain } from "@/components/teste-sheet";
+import { useBudgetForm } from "@/presentation/hooks/budget/use-budget-form";
 
 import { styles } from "./styles";
 
@@ -29,13 +26,25 @@ import { styles } from "./styles";
  * Component Budget para a interação do usuário com ui.
  */
 const Budget: React.FC = () => {
-  const [title, setTitle] = useState("");
-  const [client, setClient] = useState("");
-  const [status, setStatus] = useState<IStatusType>("draft");
-  const [services, setServices] = useState<IServiceItem[]>(MOCK_SERVICES);
-  const [sheetMode, setSheetMode] = useState<ServiceSheetMode>("add");
-  const [editingServiceId, setEditingServiceId] = useState<string | null>(null);
-  const [sheetKey, setSheetKey] = useState(0);
+  const {
+    title,
+    setTitle,
+    client,
+    setClient,
+    status,
+    setStatus,
+    services,
+    setServices,
+    investment,
+    saving,
+    save,
+  } = useBudgetForm();
+
+  const [sheetMode, setSheetMode] = React.useState<ServiceSheetMode>("add");
+  const [editingServiceId, setEditingServiceId] = React.useState<string | null>(
+    null,
+  );
+  const [sheetKey, setSheetKey] = React.useState(0);
 
   const isServiceSheetOpen = useSharedValue(false);
 
@@ -110,8 +119,8 @@ const Budget: React.FC = () => {
                 price: formattedPrice,
                 quantity: values.quantity,
               }
-            : service
-        )
+            : service,
+        ),
       );
     } else {
       setServices((prev) => [
@@ -135,13 +144,18 @@ const Budget: React.FC = () => {
     }
 
     setServices((prev) =>
-      prev.filter((service) => service.id !== editingServiceId)
+      prev.filter((service) => service.id !== editingServiceId),
     );
     closeServiceSheet();
   }
 
-  function handleSave() {
-    console.log("Salvar orçamento", { title, client, status, services });
+  async function handleSave() {
+    if (!title.trim() || !client.trim()) {
+      return;
+    }
+
+    await save();
+    router.back();
   }
 
   return (
@@ -166,12 +180,13 @@ const Budget: React.FC = () => {
           onAddService={handleAddService}
         />
 
-        <InvestmentSummary {...MOCK_INVESTMENT} />
+        <InvestmentSummary {...investment} />
       </ScrollView>
 
       <BudgetFooter
         onCancel={() => router.back()}
         onSave={handleSave}
+        saveDisabled={saving}
       />
 
       <BottomSheetMain

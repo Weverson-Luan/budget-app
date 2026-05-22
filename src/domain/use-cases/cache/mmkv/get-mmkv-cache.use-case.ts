@@ -3,7 +3,7 @@
  */
 
 import { CacheSerializerContract } from "@/domain/adapters/cache/cache-serializer-contract";
-import { MmkvRepositoryContract } from "@/domain/repositories/cache/mmkv-repository-contract";
+import { LocalStorageRepositoryContract } from "@/domain/repositories/cache/local-storage-repository-contract";
 
 /**
  * Caso de uso responsável por buscar
@@ -11,7 +11,7 @@ import { MmkvRepositoryContract } from "@/domain/repositories/cache/mmkv-reposit
  */
 class GetMmkvCacheUseCase {
   constructor(
-    private readonly cacheRepository: MmkvRepositoryContract,
+    private readonly cacheRepository: LocalStorageRepositoryContract,
     private readonly cacheSerializer: CacheSerializerContract,
   ) {}
 

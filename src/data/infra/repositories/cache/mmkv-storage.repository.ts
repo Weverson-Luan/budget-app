@@ -6,7 +6,7 @@
 import { MmkvRepositoryContract } from "@/domain/repositories/cache/mmkv-repository-contract";
 
 // data libs
-import { mmkvStorage } from "@/data/libs/mmkv";
+import { getMmkvStorage } from "@/data/libs/mmkv";
 
 /**
  * Repositório responsável por realizar operações
@@ -41,19 +41,19 @@ import { mmkvStorage } from "@/data/libs/mmkv";
  */
 class MMKVStorageRepository implements MmkvRepositoryContract {
   async set(key: string, value: string): Promise<void> {
-    mmkvStorage.set(key, value);
+    getMmkvStorage().set(key, value);
   }
 
   async get(key: string): Promise<string | null> {
-    return mmkvStorage.getString(key) ?? null;
+    return getMmkvStorage().getString(key) ?? null;
   }
 
   async remove(key: string): Promise<void> {
-    mmkvStorage.remove(key);
+    getMmkvStorage().remove(key);
   }
 
   async clear(): Promise<void> {
-    mmkvStorage.clearAll();
+    getMmkvStorage().clearAll();
   }
 }
 

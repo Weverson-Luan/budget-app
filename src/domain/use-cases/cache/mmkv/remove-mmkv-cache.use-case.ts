@@ -2,14 +2,14 @@
  * IMPORTS
  */
 
-import { MmkvRepositoryContract } from "@/domain/repositories/cache/mmkv-repository-contract";
+import { LocalStorageRepositoryContract } from "@/domain/repositories/cache/local-storage-repository-contract";
 
 /**
  * Caso de uso responsável por remover
  * um valor do cache local via MMKV.
  */
 class RemoveMmkvCacheUseCase {
-  constructor(private readonly cacheRepository: MmkvRepositoryContract) {}
+  constructor(private readonly cacheRepository: LocalStorageRepositoryContract) {}
 
   async execute(key: string): Promise<void> {
     await this.cacheRepository.remove(key);

@@ -2,17 +2,11 @@
  * IMPORTS
  */
 
-interface AsyncStorageRepositoryContract {
-  set(key: string, value: string): Promise<void>;
+import { LocalStorageRepositoryContract } from "./local-storage-repository-contract";
 
-  get(key: string): Promise<string | null>;
-
-  remove(key: string): Promise<void>;
-
-  clear(): Promise<void>;
-}
+type AsyncStorageRepositoryContract = LocalStorageRepositoryContract;
 
 /**
  * EXPORTS
  */
-export { AsyncStorageRepositoryContract };
+export type { AsyncStorageRepositoryContract };

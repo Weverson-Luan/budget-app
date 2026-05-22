@@ -2,17 +2,11 @@
  * IMPORTS
  */
 
-interface MmkvRepositoryContract {
-  set(key: string, value: string): Promise<void>;
+import { LocalStorageRepositoryContract } from "./local-storage-repository-contract";
 
-  get(key: string): Promise<string | null>;
-
-  remove(key: string): Promise<void>;
-
-  clear(): Promise<void>;
-}
+type MmkvRepositoryContract = LocalStorageRepositoryContract;
 
 /**
  * EXPORTS
  */
-export { MmkvRepositoryContract };
+export type { MmkvRepositoryContract };

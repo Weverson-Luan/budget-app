@@ -1,7 +1,7 @@
 /**
  * IMPORTS
  */
-import React, { useRef } from "react";
+import React, { useMemo, useRef } from "react";
 
 import {
   View,
@@ -19,8 +19,8 @@ import BottomSheet from "@gorhom/bottom-sheet";
 // components
 import { AppButton } from "@/components/forms/app-button";
 import { BudgetCard } from "@/components/budget-card";
-import { BUDGET_LIST } from "@/data/budgets";
 import { FilterBottomSheet } from "@/components/filter-bottom-sheet";
+import { NotFound } from "@/components/not-found";
 
 // styles
 import { styles } from "./styles";
@@ -28,6 +28,7 @@ import { theme } from "@/styles/theme/theme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BottomSheetMain } from "@/components/teste-sheet";
 import { useSharedValue } from "react-native-reanimated";
+import { useBudgetList } from "@/presentation/hooks/budget/use-budget-list";
 
 /**
  * Screen Home para a interação do usuário com ui.
@@ -35,6 +36,19 @@ import { useSharedValue } from "react-native-reanimated";
 const Home: React.FC = () => {
   const insets = useSafeAreaInsets();
   const sheetRef = useRef<BottomSheet>(null);
+  const { budgets } = useBudgetList();
+
+  const draftCount = useMemo(
+    () => budgets.filter((item) => item.status === "draft").length,
+    [budgets],
+  );
+
+  const subtitleLabel =
+    budgets.length === 0
+      ? "Nenhum orçamento cadastrado"
+      : draftCount === 1
+        ? "Você tem 1 item em rascunho"
+        : `Você tem ${draftCount} itens em rascunho`;
 
   function handleOpenFilter() {
     sheetRef.current?.snapToIndex(0);
@@ -61,7 +75,7 @@ const Home: React.FC = () => {
         <View style={styles.header}>
           <View>
             <Text style={styles.title}>Todos orçamentos</Text>
-            <Text style={styles.subtitle}>Você tem 1 item em rascunho</Text>
+            <Text style={styles.subtitle}>{subtitleLabel}</Text>
           </View>
 
           <AppButton
@@ -89,11 +103,26 @@ const Home: React.FC = () => {
 
         {/* LIST */}
         <FlatList
-          data={BUDGET_LIST}
+          data={budgets}
           keyExtractor={(item) => item.id}
-          contentContainerStyle={{ gap: 12 }}
+          contentContainerStyle={[
+            { gap: 12 },
+            budgets.length === 0 && { flexGrow: 1 },
+          ]}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => <BudgetCard item={item} />}
+          ListEmptyComponent={
+            <NotFound
+              icon={
+                <Feather
+                  name="file-text"
+                  size={48}
+                  color={theme.colors.gray_400}
+                />
+              }
+              text="Sem orçamentos"
+            />
+          }
         />
       </View>
 

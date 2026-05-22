@@ -2,52 +2,49 @@
  * IMPORTS
  */
 
-import { router, Stack } from "expo-router";
+import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet } from "react-native";
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-// components
-import { Header } from "@/components/header";
-import { getBudgetDetailById } from "@/data/budgets";
+import { BudgetStackHeader } from "@/presentation/components/budget-stack-header";
+import { BudgetStorageProvider } from "@/presentation/providers/budget-storage.provider";
 
-// styles
 import { theme } from "@/styles/theme/theme";
 
 export default function RootLayout() {
   return (
     <GestureHandlerRootView style={styles.root}>
       <SafeAreaProvider>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="budget/[id]"
-            options={({ route }) => {
-              const { id = "1" } = route?.params as { id?: string };
-              const detail = getBudgetDetailById(id);
+        <BudgetStorageProvider>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="budget/[id]"
+              options={({ route }) => {
+                const { id = "1" } = route?.params as { id?: string };
 
-              return {
-                title: "Orçamento",
-                headerShown: true,
-                header: () => (
-                  <Header
-                    title={`Orçamento #${id}`}
-                    status={detail.status}
-                    onBack={() => router.back()}
-                  />
-                ),
-              };
-            }}
-          />
-        </Stack>
-        <StatusBar style="auto" backgroundColor={theme.colors.gray_700} />
+                return {
+                  title: "Orçamento",
+                  headerShown: true,
+                  header: () => (
+                    <BudgetStackHeader
+                      id={id}
+                      title={`Orçamento #${id}`}
+                    />
+                  ),
+                };
+              }}
+            />
+          </Stack>
+          <StatusBar style="auto" backgroundColor={theme.colors.gray_700} />
+        </BudgetStorageProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
 }
-
 
 /**
  * EXPORTS
