@@ -4,7 +4,7 @@
 
 import React, {
   createContext,
-  useContext,
+  useCallback,
   useEffect,
   useMemo,
   useState,
@@ -15,16 +15,15 @@ import { budgetUseCases } from "@/factories/budget/make-budget-use-cases.factory
 // typings
 import { BudgetStorageContextValue } from "./interface";
 
-
-export const BudgetStorageContext = createContext<BudgetStorageContextValue>({
+const BudgetStorageContext = createContext<BudgetStorageContextValue>({
   isReady: false,
+  revision: 0,
+  notifyChange: () => undefined,
 });
 
-
 function BudgetStorageProvider({ children }: { children: React.ReactNode }) {
-
-
   const [isReady, setIsReady] = useState(false);
+  const [revision, setRevision] = useState(0);
 
   useEffect(() => {
     let mounted = true;
@@ -40,7 +39,14 @@ function BudgetStorageProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  const value = useMemo(() => ({ isReady }), [isReady]);
+  const notifyChange = useCallback(() => {
+    setRevision((current) => current + 1);
+  }, []);
+
+  const value = useMemo(
+    () => ({ isReady, revision, notifyChange }),
+    [isReady, revision, notifyChange],
+  );
 
   if (!isReady) {
     return null;
@@ -53,8 +59,7 @@ function BudgetStorageProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-
 /**
  * EXPORTS
  */
-export { BudgetStorageProvider };
+export { BudgetStorageContext, BudgetStorageProvider };

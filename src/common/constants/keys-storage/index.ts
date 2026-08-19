@@ -5,7 +5,7 @@
 const KEYS_STORAGE = {
   budgets: {
     list: "@app/budgets/list",
-    details: "@app/budgets/details",
+    filters: "@app/budgets/filters",
     initialized: "@app/budgets/initialized",
   },
   auth: {
@@ -13,6 +13,15 @@ const KEYS_STORAGE = {
   },
   user: {
     profile_data: "@app/user/profile_data",
+  },
+} as const;
+
+/**
+ * Chaves de versões anteriores mantidas apenas para migração.
+ */
+const LEGACY_KEYS_STORAGE = {
+  budgets: {
+    details: "@app/budgets/details",
   },
 } as const;
 
@@ -24,5 +33,5 @@ type StorageKey =
 /**
  * EXPORTS
  */
-export { KEYS_STORAGE };
+export { KEYS_STORAGE, LEGACY_KEYS_STORAGE };
 export type { StorageKey };

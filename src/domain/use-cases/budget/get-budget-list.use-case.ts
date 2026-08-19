@@ -3,7 +3,7 @@
  */
 
 import { KEYS_STORAGE } from "@/common/constants/keys-storage";
-import { IBudgetCardItem } from "@/domain/entities/budget/budget.entity";
+import { QuoteDoc } from "@/domain/entities/budget/budget.entity";
 import { LocalCacheUseCases } from "@/factories/cache/make-local-cache.factory";
 
 /**
@@ -12,12 +12,12 @@ import { LocalCacheUseCases } from "@/factories/cache/make-local-cache.factory";
 class GetBudgetListUseCase {
   constructor(private readonly cache: LocalCacheUseCases) {}
 
-  async execute(): Promise<IBudgetCardItem[]> {
-    const list = await this.cache.get.execute<IBudgetCardItem[]>(
+  async execute(): Promise<QuoteDoc[]> {
+    const list = await this.cache.get.execute<QuoteDoc[]>(
       KEYS_STORAGE.budgets.list,
     );
 
-    return list ?? [];
+    return Array.isArray(list) ? list : [];
   }
 }
 

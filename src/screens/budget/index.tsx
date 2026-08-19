@@ -2,10 +2,12 @@
  * IMPORTS
  */
 
-import React, { useMemo } from "react";
+import React, { useState } from "react";
 
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import {
+  ActivityIndicator,
+  Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -15,23 +17,22 @@ import { useSharedValue } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 // components
+import { BottomSheetMain } from "@/components/bottom-sheet";
 import { BudgetFooter } from "@/components/budget-footer";
 import { GeneralInformation } from "@/components/general-information";
 import { IncludedServices } from "@/components/included-services";
 import { InvestmentSummary } from "@/components/investment-summary";
 import { ServiceBottomSheet } from "@/components/service-bottom-sheet";
 import { StatusSelector } from "@/components/status-selector";
-import { BottomSheetMain } from "@/components/teste-sheet";
 
-// hooksS
+// hooks
 import { useBudgetForm } from "@/presentation/hooks/budget/use-budget-form";
 
-// typingsS
+// typings
 import {
   ServiceFormValues,
   ServiceSheetMode,
 } from "@/components/service-bottom-sheet/interface";
-
 
 // styles
 import { styles } from "./styles";
@@ -43,6 +44,7 @@ const FOOTER_HEIGHT = 88;
  */
 const Budget: React.FC = () => {
   const insets = useSafeAreaInsets();
+  const { id } = useLocalSearchParams<{ id?: string }>();
 
   const keyboardVerticalOffset = insets.top + 56;
 
@@ -53,20 +55,31 @@ const Budget: React.FC = () => {
     setClient,
     status,
     setStatus,
-    services,
-    setServices,
+    serviceViewItems,
+    discountInput,
+    setDiscountInput,
     investment,
+    titleError,
+    clientError,
+    loading,
     saving,
+    addItem,
+    updateItem,
+    removeItem,
+    getItemFormValues,
     save,
-  } = useBudgetForm();
+  } = useBudgetForm(id);
 
-  const [sheetMode, setSheetMode] = React.useState<ServiceSheetMode>("add");
-  const [editingServiceId, setEditingServiceId] = React.useState<string | null>(
-    null,
-  );
-  const [sheetKey, setSheetKey] = React.useState(0);
+  const [sheetMode, setSheetMode] = useState<ServiceSheetMode>("add");
+  const [editingServiceId, setEditingServiceId] = useState<string | null>(null);
+  const [sheetKey, setSheetKey] = useState(0);
 
   const isServiceSheetOpen = useSharedValue(false);
+
+  const sheetInitialValues =
+    sheetMode === "edit" && editingServiceId
+      ? getItemFormValues(editingServiceId)
+      : undefined;
 
   function closeServiceSheet() {
     isServiceSheetOpen.value = false;
@@ -82,25 +95,6 @@ const Budget: React.FC = () => {
     isServiceSheetOpen.value = true;
   }
 
-  const sheetInitialValues = useMemo(() => {
-    if (sheetMode !== "edit" || !editingServiceId) {
-      return undefined;
-    }
-
-    const service = services.find((item) => item.id === editingServiceId);
-
-    if (!service) {
-      return undefined;
-    }
-
-    return {
-      name: service.title,
-      description: service.description,
-      price: service.price.replace(/^R\$\s?/, ""),
-      quantity: service.quantity,
-    };
-  }, [sheetMode, editingServiceId, services]);
-
   function openServiceSheet(mode: ServiceSheetMode, serviceId?: string) {
     setSheetMode(mode);
     setEditingServiceId(serviceId ?? null);
@@ -108,51 +102,16 @@ const Budget: React.FC = () => {
     isServiceSheetOpen.value = true;
   }
 
-  function formatPrice(price: string) {
-    const trimmed = price.trim();
-    if (!trimmed) {
-      return "R$ 0,00";
+  function handleSaveService(values: ServiceFormValues) {
+    if (!values.name.trim()) {
+      Alert.alert("Serviço inválido", "Informe o nome do serviço.");
+      return;
     }
 
-    return trimmed.startsWith("R$") ? trimmed : `R$ ${trimmed}`;
-  }
-
-  function handleEditService(id: string) {
-    openServiceSheet("edit", id);
-  }
-
-  function handleAddService() {
-    openServiceSheet("add");
-  }
-
-  function handleSaveService(values: ServiceFormValues) {
-    const formattedPrice = formatPrice(values.price);
-
     if (sheetMode === "edit" && editingServiceId) {
-      setServices((prev) =>
-        prev.map((service) =>
-          service.id === editingServiceId
-            ? {
-              ...service,
-              title: values.name,
-              description: values.description,
-              price: formattedPrice,
-              quantity: values.quantity,
-            }
-            : service,
-        ),
-      );
+      updateItem(editingServiceId, values);
     } else {
-      setServices((prev) => [
-        ...prev,
-        {
-          id: String(Date.now()),
-          title: values.name,
-          description: values.description,
-          price: formattedPrice,
-          quantity: values.quantity,
-        },
-      ]);
+      addItem(values);
     }
 
     closeServiceSheet();
@@ -163,26 +122,42 @@ const Budget: React.FC = () => {
       return;
     }
 
-    setServices((prev) =>
-      prev.filter((service) => service.id !== editingServiceId),
-    );
-    closeServiceSheet();
-  }
+    const serviceId = editingServiceId;
 
-  function resetLocalState() {
-    setSheetMode("add");
-    setEditingServiceId(null);
-    isServiceSheetOpen.value = false;
+    Alert.alert(
+      "Remover serviço",
+      "Tem certeza que deseja remover este serviço do orçamento?",
+      [
+        { text: "Cancelar", style: "cancel" },
+        {
+          text: "Remover",
+          style: "destructive",
+          onPress: () => {
+            removeItem(serviceId);
+            closeServiceSheet();
+          },
+        },
+      ],
+    );
   }
 
   async function handleSave() {
-    if (!title.trim() || !client.trim()) {
+    const saved = await save();
+
+    if (!saved) {
       return;
     }
 
-    await save();
-    resetLocalState();
+    closeServiceSheet();
     router.back();
+  }
+
+  if (loading) {
+    return (
+      <View style={[styles.wrapper, styles.loading]}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
   }
 
   return (
@@ -208,17 +183,23 @@ const Budget: React.FC = () => {
             client={client}
             onChangeTitle={setTitle}
             onChangeClient={setClient}
+            titleError={titleError}
+            clientError={clientError}
           />
 
           <StatusSelector value={status} onChange={setStatus} />
 
           <IncludedServices
-            services={services}
-            onEditService={handleEditService}
-            onAddService={handleAddService}
+            services={serviceViewItems}
+            onEditService={(serviceId) => openServiceSheet("edit", serviceId)}
+            onAddService={() => openServiceSheet("add")}
           />
 
-          <InvestmentSummary {...investment} />
+          <InvestmentSummary
+            {...investment}
+            discountInput={discountInput}
+            onChangeDiscount={setDiscountInput}
+          />
         </ScrollView>
 
         <BudgetFooter
@@ -239,9 +220,7 @@ const Budget: React.FC = () => {
           initialValues={sheetInitialValues}
           onClose={closeServiceSheet}
           onSave={handleSaveService}
-          onDelete={
-            sheetMode === "edit" ? handleDeleteService : undefined
-          }
+          onDelete={sheetMode === "edit" ? handleDeleteService : undefined}
         />
       </BottomSheetMain>
     </View>

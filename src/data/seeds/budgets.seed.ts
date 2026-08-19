@@ -2,172 +2,177 @@
  * IMPORTS
  */
 
-import { IBudgetCardItem } from "@/components/budget-card/interface";
-import { IBudgetOverviewProps } from "@/components/budget-overview/interface";
-import { IServiceItem } from "@/components/included-services/interface";
-import { IInvestmentSummaryOverviewProps } from "@/components/investment-summary-overview/interface";
-import {
-  BudgetDetailsMap,
-  IBudgetDetail,
-} from "@/domain/entities/budget/budget.entity";
+import { QuoteDoc } from "@/domain/entities/budget/budget.entity";
 
-const BUDGET_SEED_LIST: IBudgetCardItem[] = [
+/**
+ * Orçamentos de exemplo gravados na primeira execução do app,
+ * já no formato `QuoteDoc`.
+ */
+const BUDGET_SEED_LIST: QuoteDoc[] = [
   {
-    id: "1",
+    id: "seed-1",
     title: "Desenvolvimento de aplicativo de loja online",
     client: "Soluções Tecnológicas Beta",
-    value: "R$ 22.300,00",
     status: "approved",
+    discountPct: 5,
+    createdAt: "2024-08-22T09:00:00.000Z",
+    updatedAt: "2024-08-25T14:30:00.000Z",
+    items: [
+      {
+        id: "seed-1-item-1",
+        description: "Design de interfaces",
+        details: "Criação de wireframes e protótipos de alta fidelidade",
+        qty: 1,
+        price: 3847.5,
+      },
+      {
+        id: "seed-1-item-2",
+        description: "Desenvolvimento front-end",
+        details: "Criação de interfaces de usuário interativas",
+        qty: 2,
+        price: 3847.5,
+      },
+      {
+        id: "seed-1-item-3",
+        description: "Desenvolvimento back-end",
+        details: "Implementação de servidor, banco de dados e APIs",
+        qty: 1,
+        price: 3847.5,
+      },
+      {
+        id: "seed-1-item-4",
+        description: "Implantação e suporte",
+        details: "Publicação nas lojas de aplicativos e suporte técnico",
+        qty: 1,
+        price: 3847.5,
+      },
+    ],
   },
   {
-    id: "2",
+    id: "seed-2",
     title: "Consultoria em marketing digital",
     client: "Marketing Wizards",
-    value: "R$ 4.000,00",
     status: "draft",
+    createdAt: "2024-09-02T10:15:00.000Z",
+    updatedAt: "2024-09-02T10:15:00.000Z",
+    items: [
+      {
+        id: "seed-2-item-1",
+        description: "Diagnóstico de canais",
+        details: "Análise de presença digital e concorrência",
+        qty: 1,
+        price: 1500,
+      },
+      {
+        id: "seed-2-item-2",
+        description: "Plano de mídia",
+        details: "Definição de investimento por canal",
+        qty: 1,
+        price: 2500,
+      },
+    ],
   },
   {
-    id: "3",
+    id: "seed-3",
     title: "Serviços de SEO",
     client: "SEO Masters",
-    value: "R$ 3.500,00",
     status: "sent",
+    discountPct: 10,
+    createdAt: "2024-09-10T08:40:00.000Z",
+    updatedAt: "2024-09-12T16:05:00.000Z",
+    items: [
+      {
+        id: "seed-3-item-1",
+        description: "Auditoria técnica",
+        details: "Correção de indexação e performance",
+        qty: 1,
+        price: 1900,
+      },
+      {
+        id: "seed-3-item-2",
+        description: "Otimização de conteúdo",
+        details: "Revisão de páginas e palavras-chave",
+        qty: 2,
+        price: 900,
+      },
+    ],
   },
   {
-    id: "4",
+    id: "seed-4",
     title: "Criação de conteúdo",
     client: "Content Creators",
-    value: "R$ 2.500,00",
     status: "draft",
+    createdAt: "2024-09-18T11:20:00.000Z",
+    updatedAt: "2024-09-18T11:20:00.000Z",
+    items: [
+      {
+        id: "seed-4-item-1",
+        description: "Artigos para blog",
+        details: "Produção de 5 artigos otimizados",
+        qty: 5,
+        price: 320,
+      },
+      {
+        id: "seed-4-item-2",
+        description: "Roteiro de vídeo",
+        details: "Roteiro e storyboard para institucional",
+        qty: 1,
+        price: 900,
+      },
+    ],
   },
   {
-    id: "5",
+    id: "seed-5",
     title: "Gestão de redes sociais",
     client: "Social Experts",
-    value: "R$ 1.800,00",
     status: "declined",
+    createdAt: "2024-09-25T13:00:00.000Z",
+    updatedAt: "2024-09-27T09:45:00.000Z",
+    items: [
+      {
+        id: "seed-5-item-1",
+        description: "Calendário editorial",
+        details: "Planejamento mensal de publicações",
+        qty: 1,
+        price: 800,
+      },
+      {
+        id: "seed-5-item-2",
+        description: "Criação de posts",
+        details: "Peças gráficas e legendas",
+        qty: 10,
+        price: 100,
+      },
+    ],
   },
   {
-    id: "6",
+    id: "seed-6",
     title: "Design de interface",
     client: "UI/UX Designers",
-    value: "R$ 5.200,00",
     status: "approved",
+    discountPct: 8,
+    createdAt: "2024-10-03T15:30:00.000Z",
+    updatedAt: "2024-10-05T10:10:00.000Z",
+    items: [
+      {
+        id: "seed-6-item-1",
+        description: "Design system",
+        details: "Tokens, componentes e documentação",
+        qty: 1,
+        price: 3200,
+      },
+      {
+        id: "seed-6-item-2",
+        description: "Protótipo navegável",
+        details: "Fluxos principais em alta fidelidade",
+        qty: 1,
+        price: 2400,
+      },
+    ],
   },
 ];
-
-const DEFAULT_DATES = {
-  createdAt: "22/08/2024",
-  updatedAt: "25/08/2024",
-};
-
-const DESIGN_OVERVIEW: IBudgetOverviewProps = {
-  title: "Desenvolvimento de aplicativo de loja online",
-  client: "Soluções Tecnológicas Beta",
-  ...DEFAULT_DATES,
-};
-
-const DESIGN_SERVICES: IServiceItem[] = [
-  {
-    id: "1",
-    title: "Design de interfaces",
-    description: "Criação de wireframes e protótipos de alta fidelidade",
-    price: "R$ 3.847,50",
-    quantity: 1,
-  },
-  {
-    id: "2",
-    title: "Desenvolvimento front-end",
-    description: "Criação de interfaces de usuário interativas",
-    price: "R$ 3.847,50",
-    quantity: 1,
-  },
-  {
-    id: "3",
-    title: "Desenvolvimento back-end",
-    description: "Implementação de servidor, banco de dados e APIs",
-    price: "R$ 3.847,50",
-    quantity: 1,
-  },
-  {
-    id: "4",
-    title: "Implantação e suporte",
-    description: "Publicação nas lojas de aplicativos e suporte técnico",
-    price: "R$ 3.847,50",
-    quantity: 1,
-  },
-];
-
-const DESIGN_INVESTMENT: IInvestmentSummaryOverviewProps = {
-  subtotal: "R$ 4.050,00",
-  discountPercent: 5,
-  discountValue: "R$ 200,00",
-  total: "R$ 3.847,50",
-};
-
-const DEFAULT_SERVICES: IServiceItem[] = [
-  {
-    id: "1",
-    title: "Design de interfaces",
-    description: "Criação de wireframes e protótipos navegáveis",
-    price: "R$ 3.847,50",
-    quantity: 1,
-  },
-  {
-    id: "2",
-    title: "Implantação e suporte",
-    description: "Publicação nas lojas de aplicativos e treinamento",
-    price: "R$ 1.280,00",
-    quantity: 1,
-  },
-];
-
-const DEFAULT_INVESTMENT: IInvestmentSummaryOverviewProps = {
-  subtotal: "R$ 4.050,00",
-  discountPercent: 5,
-  discountValue: "R$ 200,00",
-  total: "R$ 3.847,50",
-};
-
-function buildOverviewFromCard(item: IBudgetCardItem): IBudgetOverviewProps {
-  return {
-    title: item.title,
-    client: item.client,
-    ...DEFAULT_DATES,
-  };
-}
-
-function buildBudgetDetailsSeed(): BudgetDetailsMap {
-  const details: BudgetDetailsMap = {};
-
-  for (const card of BUDGET_SEED_LIST) {
-    if (card.id === "1") {
-      details[card.id] = {
-        id: card.id,
-        status: card.status,
-        overview: DESIGN_OVERVIEW,
-        services: DESIGN_SERVICES,
-        investment: DESIGN_INVESTMENT,
-      };
-      continue;
-    }
-
-    details[card.id] = {
-      id: card.id,
-      status: card.status,
-      overview: buildOverviewFromCard(card),
-      services: DEFAULT_SERVICES,
-      investment: DEFAULT_INVESTMENT,
-    };
-  }
-
-  return details;
-}
-
-const BUDGET_SEED_DETAILS = buildBudgetDetailsSeed();
 
 /**
  * EXPORTS
  */
-export { BUDGET_SEED_LIST, BUDGET_SEED_DETAILS };
-export type { IBudgetDetail };
+export { BUDGET_SEED_LIST };

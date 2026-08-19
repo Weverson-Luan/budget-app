@@ -2,36 +2,69 @@
  * IMPORTS
  */
 
-import { IBudgetCardItem } from "@/components/budget-card/interface";
-import { IBudgetOverviewProps } from "@/components/budget-overview/interface";
-import { IServiceItem } from "@/components/included-services/interface";
-import { IInvestmentSummaryOverviewProps } from "@/components/investment-summary-overview/interface";
-import { IStatusType } from "@/components/status/interface";
+/**
+ * Status possíveis de um orçamento.
+ */
+type QuoteStatus = "draft" | "sent" | "approved" | "declined";
 
-interface IBudgetDetail {
+/**
+ * Item (serviço) de um orçamento.
+ *
+ * `description` é o nome do serviço exibido como rótulo principal.
+ * `details` é a descrição complementar opcional apresentada no layout.
+ */
+interface QuoteItem {
   id: string;
-  status: IStatusType;
-  overview: IBudgetOverviewProps;
-  services: IServiceItem[];
-  investment: IInvestmentSummaryOverviewProps;
+  description: string;
+  qty: number;
+  price: number;
+  details?: string;
 }
 
-type BudgetDetailsMap = Record<string, IBudgetDetail>;
+/**
+ * Documento de orçamento persistido localmente.
+ */
+interface QuoteDoc {
+  id: string;
+  client: string;
+  title: string;
+  items: QuoteItem[];
+  discountPct?: number;
+  status: QuoteStatus;
+  createdAt: string;
+  updatedAt: string;
+}
 
-interface SaveBudgetInput {
+/**
+ * Dados aceitos na criação/atualização de um orçamento.
+ */
+interface SaveQuoteInput {
   id?: string;
   title: string;
   client: string;
-  status: IStatusType;
-  services: IServiceItem[];
+  status: QuoteStatus;
+  items: QuoteItem[];
+  discountPct?: number;
+}
+
+/**
+ * Totais calculados a partir dos itens do orçamento.
+ */
+interface QuoteTotals {
+  itemCount: number;
+  subtotal: number;
+  discountPct: number;
+  discountValue: number;
+  total: number;
 }
 
 /**
  * EXPORTS
  */
 export type {
-  IBudgetCardItem,
-  IBudgetDetail,
-  BudgetDetailsMap,
-  SaveBudgetInput,
+  QuoteDoc,
+  QuoteItem,
+  QuoteStatus,
+  QuoteTotals,
+  SaveQuoteInput,
 };

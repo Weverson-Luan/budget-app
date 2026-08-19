@@ -5,13 +5,13 @@
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback, useEffect, useState } from "react";
 
-import { IBudgetCardItem } from "@/domain/entities/budget/budget.entity";
+import { QuoteDoc } from "@/domain/entities/budget/budget.entity";
 import { budgetUseCases } from "@/factories/budget/make-budget-use-cases.factory";
-import { useBudgetStorageReady } from "./index";
+import { useBudgetStorage } from "./index";
 
 function useBudgetList() {
-  const isReady = useBudgetStorageReady();
-  const [budgets, setBudgets] = useState<IBudgetCardItem[]>([]);
+  const { isReady, revision } = useBudgetStorage();
+  const [budgets, setBudgets] = useState<QuoteDoc[]>([]);
   const [loading, setLoading] = useState(true);
 
   const refresh = useCallback(async () => {
@@ -27,7 +27,7 @@ function useBudgetList() {
     }
 
     refresh();
-  }, [isReady, refresh]);
+  }, [isReady, revision, refresh]);
 
   useFocusEffect(
     useCallback(() => {

@@ -2,13 +2,14 @@
  * IMPORTS
  */
 
-import { Stack } from "expo-router";
+import { router, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet } from "react-native";
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
+import { Header } from "@/components/header";
 import { BudgetStackHeader } from "@/presentation/components/budget-stack-header";
 import { BudgetStorageProvider } from "@/presentation/context/budget-storage.provider";
 
@@ -24,18 +25,26 @@ export default function RootLayout() {
             <Stack.Screen
               name="budget/[id]"
               options={({ route }) => {
-                const { id = "1" } = route?.params as { id?: string };
+                const { id = "" } = (route?.params ?? {}) as { id?: string };
 
                 return {
                   title: "Orçamento",
                   headerShown: true,
-                  header: () => (
-                    <BudgetStackHeader
-                      id={id}
-                      title={`Orçamento #${id}`}
-                    />
-                  ),
+                  header: () => <BudgetStackHeader id={id} />,
                 };
+              }}
+            />
+            <Stack.Screen
+              name="budget/edit/[id]"
+              options={{
+                title: "Editar orçamento",
+                headerShown: true,
+                header: () => (
+                  <Header
+                    title="Editar orçamento"
+                    onBack={() => router.back()}
+                  />
+                ),
               }}
             />
           </Stack>

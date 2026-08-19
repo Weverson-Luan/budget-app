@@ -7,21 +7,29 @@ import React from "react";
 import { router } from "expo-router";
 
 import { Header } from "@/components/header";
-import { IStatusType } from "@/components/status/interface";
 import { useBudgetDetail } from "@/presentation/hooks/budget/use-budget-detail";
 
+/**
+ * Header da stack de detalhe do orçamento.
+ *
+ * Exibe o título e o status atuais, acompanhando as alterações
+ * feitas na tela (mudança de status, edição, duplicação).
+ */
 function BudgetStackHeader({
   id,
-  title,
+  fallbackTitle = "Orçamento",
 }: {
   id: string;
-  title: string;
+  fallbackTitle?: string;
 }) {
-  const { detail } = useBudgetDetail(id);
-  const status: IStatusType = detail?.status ?? "draft";
+  const { budget } = useBudgetDetail(id);
 
   return (
-    <Header title={title} status={status} onBack={() => router.back()} />
+    <Header
+      title={budget?.title ?? fallbackTitle}
+      status={budget?.status}
+      onBack={() => router.back()}
+    />
   );
 }
 

@@ -21,6 +21,10 @@ const styles = StyleSheet.create({
     padding: 16,
     gap: 16,
   },
+  loading: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 /**

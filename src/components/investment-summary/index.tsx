@@ -5,7 +5,7 @@
 import React from "react";
 
 import { Feather } from "@expo/vector-icons";
-import { Text, View } from "react-native";
+import { Text, TextInput, View } from "react-native";
 
 // typings
 import { IInvestmentSummaryProps } from "./interface";
@@ -24,7 +24,10 @@ const InvestmentSummary: React.FC<IInvestmentSummaryProps> = ({
   discountValue,
   originalTotal,
   total,
+  discountInput,
+  onChangeDiscount,
 }) => {
+  const isEditable = typeof onChangeDiscount === "function";
   const hasDiscount = discountPercent > 0;
   const itemLabel = itemCount === 1 ? "1 item" : `${itemCount} itens`;
 
@@ -49,15 +52,32 @@ const InvestmentSummary: React.FC<IInvestmentSummaryProps> = ({
         </View>
       </View>
 
-      {hasDiscount && (
+      {(isEditable || hasDiscount) && (
         <View style={styles.row}>
           <Text style={styles.rowLabel}>Desconto</Text>
           <View style={styles.rowCenter}>
-            <View style={styles.discountBadge}>
-              <Text style={styles.discountBadgeText}>
-                {discountPercent} %
-              </Text>
-            </View>
+            {isEditable ? (
+              <View style={styles.discountInputWrapper}>
+                <TextInput
+                  style={styles.discountInput}
+                  value={discountInput}
+                  onChangeText={onChangeDiscount}
+                  keyboardType="numeric"
+                  placeholder="0"
+                  placeholderTextColor={theme.colors.gray_400}
+                  maxLength={5}
+                  accessibilityLabel="Percentual de desconto"
+                />
+                <Text style={styles.discountBadgeText}>%</Text>
+              </View>
+            ) : (
+              <View style={styles.discountBadge}>
+                <Text style={styles.discountBadgeText}>
+                  {discountPercent} %
+                </Text>
+              </View>
+            )}
+
             <Text style={styles.discountValue}>- {discountValue}</Text>
           </View>
         </View>
@@ -68,7 +88,9 @@ const InvestmentSummary: React.FC<IInvestmentSummaryProps> = ({
       <View style={styles.footer}>
         <Text style={styles.footerLabel}>Valor total</Text>
         <View style={styles.footerValues}>
-          <Text style={styles.originalTotal}>{originalTotal}</Text>
+          {hasDiscount && (
+            <Text style={styles.originalTotal}>{originalTotal}</Text>
+          )}
           <Text style={styles.total}>{total}</Text>
         </View>
       </View>

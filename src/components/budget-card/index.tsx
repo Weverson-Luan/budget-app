@@ -16,18 +16,34 @@ import { IBudgetCardProps } from "./interface";
 /**
  * Component BudgetCard para a interação do usuário com ui.
  */
-const BudgetCard: React.FC<IBudgetCardProps> = ({ item }) => {
+const BudgetCard: React.FC<IBudgetCardProps> = ({
+  item,
+  onPress,
+  onLongPress,
+}) => {
+  function handlePress() {
+    if (onPress) {
+      onPress(item.id);
+      return;
+    }
+
+    router.push({
+      pathname: "/budget/[id]",
+      params: { id: item.id },
+    });
+  }
+
   return (
     <Pressable
       style={styles.card}
-      onPress={() =>
-        router.push({
-          pathname: "/budget/[id]",
-          params: { id: item?.id ?? "0" },
-        })
-      }
+      onPress={handlePress}
+      onLongPress={onLongPress ? () => onLongPress(item.id) : undefined}
+      delayLongPress={250}
       accessibilityRole="button"
       accessibilityLabel={`Orçamento ${item.title}`}
+      accessibilityHint={
+        onLongPress ? "Toque e segure para alterar o status" : undefined
+      }
     >
       <View style={styles.cardTop}>
         <View style={{ flex: 1 }}>

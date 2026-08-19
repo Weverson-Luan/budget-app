@@ -4,16 +4,17 @@
 
 import { useContext } from "react";
 
-
 import { BudgetStorageContext } from "@/presentation/context/budget-storage.provider";
+import { BudgetStorageContextValue } from "@/presentation/context/interface";
 
-
-function useBudgetStorageReady() {
-  return useContext(BudgetStorageContext).isReady;
+/**
+ * Acesso ao estado do storage de orçamentos.
+ */
+function useBudgetStorage(): BudgetStorageContextValue {
+  return useContext(BudgetStorageContext);
 }
-
 
 /**
  * EXPORTS
  */
-export { useBudgetStorageReady };
+export { useBudgetStorage };

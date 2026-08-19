@@ -2,7 +2,12 @@
  * IMPORTS
  */
 
-type IStatusType = "sent" | "draft" | "approved" | "declined";
+import { QuoteStatus } from "@/domain/entities/budget/budget.entity";
+
+/**
+ * Alias de apresentação para o status do domínio.
+ */
+type IStatusType = QuoteStatus;
 
 interface IStatusProps {
   status: IStatusType;

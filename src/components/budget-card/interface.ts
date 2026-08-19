@@ -14,6 +14,8 @@ interface IBudgetCardItem {
 
 interface IBudgetCardProps {
   item: IBudgetCardItem;
+  onPress?: (id: string) => void;
+  onLongPress?: (id: string) => void;
 }
 
 /**

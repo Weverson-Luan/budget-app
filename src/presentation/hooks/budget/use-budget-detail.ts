@@ -4,25 +4,25 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { IBudgetDetail } from "@/domain/entities/budget/budget.entity";
+import { QuoteDoc } from "@/domain/entities/budget/budget.entity";
 import { budgetUseCases } from "@/factories/budget/make-budget-use-cases.factory";
-import { useBudgetStorageReady } from "./index";
+import { useBudgetStorage } from "./index";
 
 function useBudgetDetail(id: string) {
-  const isReady = useBudgetStorageReady();
-  const [detail, setDetail] = useState<IBudgetDetail | null>(null);
+  const { isReady, revision } = useBudgetStorage();
+  const [budget, setBudget] = useState<QuoteDoc | null>(null);
   const [loading, setLoading] = useState(true);
 
   const refresh = useCallback(async () => {
     if (!id) {
-      setDetail(null);
+      setBudget(null);
       setLoading(false);
       return;
     }
 
     setLoading(true);
     const result = await budgetUseCases.getById.execute(id);
-    setDetail(result);
+    setBudget(result);
     setLoading(false);
   }, [id]);
 
@@ -32,9 +32,9 @@ function useBudgetDetail(id: string) {
     }
 
     refresh();
-  }, [isReady, refresh]);
+  }, [isReady, revision, refresh]);
 
-  return { detail, loading, refresh };
+  return { budget, loading, refresh };
 }
 
 /**

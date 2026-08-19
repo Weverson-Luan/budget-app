@@ -67,39 +67,27 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  card: {
-    backgroundColor: "#FFF",
-    borderRadius: 12,
-    padding: 16,
-    gap: 10,
-    borderWidth: 1,
-    borderColor: "#E5E7EB",
+  filterActive: {
+    borderColor: theme.colors.purple_base,
+    backgroundColor: theme.colors.purple_light,
   },
 
-  cardTop: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    gap: 12,
+  filterBadge: {
+    position: "absolute",
+    top: 6,
+    right: 6,
+    width: 8,
+    height: 8,
+    borderRadius: 999,
+    backgroundColor: theme.colors.purple_base,
   },
 
-  cardTitle: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#111827",
+  listLoading: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 
-  cardClient: {
-    fontSize: 12,
-    color: "#6B7280",
-    marginTop: 4,
-  },
-
-  cardValue: {
-    fontSize: 14,
-    fontWeight: "700",
-    color: "#111827",
-  },
 });
 
 /**
