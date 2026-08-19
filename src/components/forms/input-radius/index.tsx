@@ -2,7 +2,7 @@
  * IMPORTS
  */
 
-import React, { useState } from "react";
+import React, { forwardRef, useState } from "react";
 import { View, TextInput, Text } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -20,58 +20,68 @@ import { theme } from "@/styles/theme/theme";
 /**
  * Component InputRadius para a interação do usuário com ui.
  */
-const InputRadius: React.FC<IInputRadiusProps> = ({
-  value,
-  placeholder = "Placeholder",
-  error = false,
-  variant = "currency",
-  onChangeText,
-  ...rest
-}: IInputRadiusProps) => {
-  const [focused, setFocused] = useState(false);
-  const isTextareaVariant = variant === "textarea";
-  const isCurrencyVariant = variant === "currency";
+const InputRadius = forwardRef<TextInput, IInputRadiusProps>(
+  (
+    {
+      value,
+      placeholder = "Placeholder",
+      error = false,
+      variant = "currency",
+      onChangeText,
+      ...rest
+    },
+    ref,
+  ) => {
+    const [focused, setFocused] = useState(false);
+    const isTextareaVariant = variant === "textarea";
+    const isCurrencyVariant = variant === "currency";
 
-  return (
-    <View
-      style={[
-        styles.container,
-        isTextareaVariant && styles.containerTextarea,
-        { borderColor: borderColor(error, focused) },
-      ]}
-    >
-      {isCurrencyVariant && (
-        <>
-          <MaterialIcons
-            name="calendar-month"
-            size={18}
-            color={textColor(error, focused)}
-          />
-
-          <Text style={[styles.prefix, { color: textColor(error, focused) }]}>
-            R$
-          </Text>
-        </>
-      )}
-
-      <TextInput
-        value={value}
-        placeholder={placeholder}
-        placeholderTextColor={theme.colors.gray_500}
+    return (
+      <View
         style={[
-          styles.input,
-          isTextareaVariant && styles.inputTextarea,
-          { color: textColor(error, focused) },
+          styles.container,
+          isTextareaVariant && styles.containerTextarea,
+          { borderColor: borderColor(error, focused) },
         ]}
-        multiline={isTextareaVariant}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        onChangeText={onChangeText}
-        {...rest}
-      />
-    </View>
-  );
-};
+      >
+        {isCurrencyVariant && (
+          <>
+            <MaterialIcons
+              name="calendar-month"
+              size={18}
+              color={textColor(error, focused)}
+            />
+
+            <Text
+              style={[styles.prefix, { color: textColor(error, focused) }]}
+            >
+              R$
+            </Text>
+          </>
+        )}
+
+        <TextInput
+          ref={ref}
+          value={value}
+          placeholder={placeholder}
+          placeholderTextColor={theme.colors.gray_500}
+          style={[
+            styles.input,
+            isTextareaVariant && styles.inputTextarea,
+            { color: textColor(error, focused) },
+          ]}
+          multiline={isTextareaVariant}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          onChangeText={onChangeText}
+          {...rest}
+        />
+      </View>
+    );
+  },
+);
+
+InputRadius.displayName = "InputRadius";
 
 /**
  * EXPORTS

@@ -10,7 +10,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { BudgetStackHeader } from "@/presentation/components/budget-stack-header";
-import { BudgetStorageProvider } from "@/presentation/providers/budget-storage.provider";
+import { BudgetStorageProvider } from "@/presentation/context/budget-storage.provider";
 
 import { theme } from "@/styles/theme/theme";
 

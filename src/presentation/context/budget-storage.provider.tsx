@@ -12,19 +12,18 @@ import React, {
 
 import { budgetUseCases } from "@/factories/budget/make-budget-use-cases.factory";
 
-interface BudgetStorageContextValue {
-  isReady: boolean;
-}
+// typings
+import { BudgetStorageContextValue } from "./interface";
 
-const BudgetStorageContext = createContext<BudgetStorageContextValue>({
+
+export const BudgetStorageContext = createContext<BudgetStorageContextValue>({
   isReady: false,
 });
 
-function useBudgetStorageReady() {
-  return useContext(BudgetStorageContext).isReady;
-}
 
 function BudgetStorageProvider({ children }: { children: React.ReactNode }) {
+
+
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
@@ -54,7 +53,8 @@ function BudgetStorageProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
+
 /**
  * EXPORTS
  */
-export { BudgetStorageProvider, useBudgetStorageReady };
+export { BudgetStorageProvider };

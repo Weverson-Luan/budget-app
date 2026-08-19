@@ -10,7 +10,12 @@ const styles = StyleSheet.create({
   wrapper: {
     width: "100%",
     flex: 1,
-    justifyContent: "space-between",
+  },
+  scroll: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
   },
 
   header: {

@@ -2,10 +2,10 @@
  * IMPORTS
  */
 
-import React from "react";
+import React, { useRef } from "react";
 
 import { Feather } from "@expo/vector-icons";
-import { Text, View } from "react-native";
+import { Text, TextInput, View } from "react-native";
 
 import { InputRadius } from "@/components/forms/input-radius";
 import { theme } from "@/styles/theme/theme";
@@ -24,6 +24,8 @@ const GeneralInformation: React.FC<IGeneralInformationProps> = ({
   titleError = false,
   clientError = false,
 }) => {
+  const clientInputRef = useRef<TextInput>(null);
+
   return (
     <View style={styles.card}>
       <View style={styles.header}>
@@ -40,14 +42,20 @@ const GeneralInformation: React.FC<IGeneralInformationProps> = ({
           value={title}
           onChangeText={onChangeTitle}
           error={titleError}
+          returnKeyType="next"
+          blurOnSubmit={false}
+          onSubmitEditing={() => clientInputRef.current?.focus()}
         />
 
         <InputRadius
+          ref={clientInputRef}
           variant="text"
           placeholder="Cliente"
           value={client}
           onChangeText={onChangeClient}
           error={clientError}
+          returnKeyType="done"
+          blurOnSubmit
         />
       </View>
     </View>

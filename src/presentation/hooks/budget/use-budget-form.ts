@@ -21,6 +21,13 @@ function useBudgetForm() {
     [services],
   );
 
+  const reset = useCallback(() => {
+    setTitle("");
+    setClient("");
+    setStatus("draft");
+    setServices([]);
+  }, []);
+
   const save = useCallback(async () => {
     setSaving(true);
 
@@ -31,10 +38,12 @@ function useBudgetForm() {
         status,
         services,
       });
+
+      reset();
     } finally {
       setSaving(false);
     }
-  }, [title, client, status, services]);
+  }, [title, client, status, services, reset]);
 
   return {
     title,
@@ -48,6 +57,7 @@ function useBudgetForm() {
     investment,
     saving,
     save,
+    reset,
   };
 }
 

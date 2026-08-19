@@ -5,27 +5,47 @@
 import React, { useMemo } from "react";
 
 import { router } from "expo-router";
-import { ScrollView, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  View,
+} from "react-native";
 import { useSharedValue } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+// components
 import { BudgetFooter } from "@/components/budget-footer";
 import { GeneralInformation } from "@/components/general-information";
 import { IncludedServices } from "@/components/included-services";
 import { InvestmentSummary } from "@/components/investment-summary";
 import { ServiceBottomSheet } from "@/components/service-bottom-sheet";
+import { StatusSelector } from "@/components/status-selector";
+import { BottomSheetMain } from "@/components/teste-sheet";
+
+// hooksS
+import { useBudgetForm } from "@/presentation/hooks/budget/use-budget-form";
+
+// typingsS
 import {
   ServiceFormValues,
   ServiceSheetMode,
 } from "@/components/service-bottom-sheet/interface";
-import { StatusSelector } from "@/components/status-selector";
-import { BottomSheetMain } from "@/components/teste-sheet";
-import { useBudgetForm } from "@/presentation/hooks/budget/use-budget-form";
 
+
+// styles
 import { styles } from "./styles";
+
+const FOOTER_HEIGHT = 88;
 
 /**
  * Component Budget para a interação do usuário com ui.
  */
 const Budget: React.FC = () => {
+  const insets = useSafeAreaInsets();
+
+  const keyboardVerticalOffset = insets.top + 56;
+
   const {
     title,
     setTitle,
@@ -113,12 +133,12 @@ const Budget: React.FC = () => {
         prev.map((service) =>
           service.id === editingServiceId
             ? {
-                ...service,
-                title: values.name,
-                description: values.description,
-                price: formattedPrice,
-                quantity: values.quantity,
-              }
+              ...service,
+              title: values.name,
+              description: values.description,
+              price: formattedPrice,
+              quantity: values.quantity,
+            }
             : service,
         ),
       );
@@ -149,45 +169,64 @@ const Budget: React.FC = () => {
     closeServiceSheet();
   }
 
+  function resetLocalState() {
+    setSheetMode("add");
+    setEditingServiceId(null);
+    isServiceSheetOpen.value = false;
+  }
+
   async function handleSave() {
     if (!title.trim() || !client.trim()) {
       return;
     }
 
     await save();
+    resetLocalState();
     router.back();
   }
 
   return (
-    <View style={[styles.wrapper, { flex: 1 }]}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.content}
-        showsVerticalScrollIndicator={false}
+    <View style={styles.wrapper}>
+      <KeyboardAvoidingView
+        style={styles.keyboardView}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={keyboardVerticalOffset}
       >
-        <GeneralInformation
-          title={title}
-          client={client}
-          onChangeTitle={setTitle}
-          onChangeClient={setClient}
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={[
+            styles.content,
+            { paddingBottom: FOOTER_HEIGHT + insets.bottom + 24 },
+          ]}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
+          automaticallyAdjustKeyboardInsets={Platform.OS === "ios"}
+        >
+          <GeneralInformation
+            title={title}
+            client={client}
+            onChangeTitle={setTitle}
+            onChangeClient={setClient}
+          />
+
+          <StatusSelector value={status} onChange={setStatus} />
+
+          <IncludedServices
+            services={services}
+            onEditService={handleEditService}
+            onAddService={handleAddService}
+          />
+
+          <InvestmentSummary {...investment} />
+        </ScrollView>
+
+        <BudgetFooter
+          onCancel={() => router.back()}
+          onSave={handleSave}
+          saveDisabled={saving}
         />
-
-        <StatusSelector value={status} onChange={setStatus} />
-
-        <IncludedServices
-          services={services}
-          onEditService={handleEditService}
-          onAddService={handleAddService}
-        />
-
-        <InvestmentSummary {...investment} />
-      </ScrollView>
-
-      <BudgetFooter
-        onCancel={() => router.back()}
-        onSave={handleSave}
-        saveDisabled={saving}
-      />
+      </KeyboardAvoidingView>
 
       <BottomSheetMain
         isOpen={isServiceSheetOpen}

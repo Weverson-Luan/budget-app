@@ -6,7 +6,13 @@ import React, { useEffect, useState } from "react";
 
 import { Feather } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-import { TouchableOpacity, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import { AppButton } from "@/components/forms/app-button";
 import { ButtonIcon } from "@/components/forms/button-icon";
@@ -52,11 +58,17 @@ const ServiceBottomSheet: React.FC<IServiceBottomSheetProps> = ({
     }
 
     setForm(EMPTY_FORM);
-  }, [mode, initialValues?.name, initialValues?.description, initialValues?.price, initialValues?.quantity]);
+  }, [
+    mode,
+    initialValues?.name,
+    initialValues?.description,
+    initialValues?.price,
+    initialValues?.quantity,
+  ]);
 
   function updateField<K extends keyof ServiceFormValues>(
     field: K,
-    value: ServiceFormValues[K]
+    value: ServiceFormValues[K],
   ) {
     setForm((prev) => ({ ...prev, [field]: value }));
   }
@@ -68,8 +80,19 @@ const ServiceBottomSheet: React.FC<IServiceBottomSheetProps> = ({
   const isEditMode = mode === "edit";
 
   return (
-    <View style={styles.wrapper}>
-      <View>
+    <KeyboardAvoidingView
+      style={styles.wrapper}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={16}
+    >
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={styles.scrollContent}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
+        showsVerticalScrollIndicator={false}
+        automaticallyAdjustKeyboardInsets={Platform.OS === "ios"}
+      >
         <View style={styles.header}>
           <Typography style={styles.headerTitle}>Serviço</Typography>
 
@@ -87,6 +110,8 @@ const ServiceBottomSheet: React.FC<IServiceBottomSheetProps> = ({
             placeholder="Nome do serviço"
             value={form.name}
             onChangeText={(text) => updateField("name", text)}
+            returnKeyType="next"
+            blurOnSubmit={false}
           />
 
           <InputRadius
@@ -104,6 +129,7 @@ const ServiceBottomSheet: React.FC<IServiceBottomSheetProps> = ({
                 value={form.price}
                 onChangeText={(text) => updateField("price", text)}
                 keyboardType="numeric"
+                returnKeyType="done"
               />
             </View>
 
@@ -113,7 +139,7 @@ const ServiceBottomSheet: React.FC<IServiceBottomSheetProps> = ({
             />
           </View>
         </View>
-      </View>
+      </ScrollView>
 
       <View style={styles.footer}>
         {isEditMode && onDelete && (
@@ -140,7 +166,7 @@ const ServiceBottomSheet: React.FC<IServiceBottomSheetProps> = ({
           />
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

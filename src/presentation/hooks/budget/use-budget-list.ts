@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { IBudgetCardItem } from "@/domain/entities/budget/budget.entity";
 import { budgetUseCases } from "@/factories/budget/make-budget-use-cases.factory";
-import { useBudgetStorageReady } from "@/presentation/providers/budget-storage.provider";
+import { useBudgetStorageReady } from "./index";
 
 function useBudgetList() {
   const isReady = useBudgetStorageReady();

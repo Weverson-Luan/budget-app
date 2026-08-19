@@ -11,13 +11,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.gray_100,
   },
+  keyboardView: {
+    flex: 1,
+  },
   container: {
     flex: 1,
   },
   content: {
     padding: 16,
     gap: 16,
-    paddingBottom: 24,
   },
 });
 
